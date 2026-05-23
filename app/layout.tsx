@@ -24,6 +24,7 @@ const NAV = [
   { href: "/predator-rp-cutoff", label: "Predator RP" },
   { href: "/crafting-rotation", label: "Crafting" },
   { href: "/legends/wraith", label: "Legends" },
+  { href: "/#search", label: "Player Search" },
 ];
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

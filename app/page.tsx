@@ -1,5 +1,6 @@
 import Link from "next/link";
 import type { Metadata } from "next";
+import { PlayerSearch } from "@/components/PlayerSearch";
 import { absoluteUrl, jsonLdScript, SITE_NAME, SITE_URL } from "@/lib/seo";
 
 export const metadata: Metadata = {
@@ -60,6 +61,19 @@ export default function Home() {
           Apexdex pulls live data from the Apex Legends Status API and turns it
           into pages that update themselves. No refresh button. No app to
           install. Just the meta, as it&apos;s happening.
+        </p>
+      </section>
+      <section id="search" className="mb-10">
+        <h2 className="mb-2 text-sm uppercase tracking-wide text-apex-dim">
+          Look up a player
+        </h2>
+        <PlayerSearch />
+        <p className="mt-2 text-xs text-apex-dim">
+          Use the Origin name for PC players. Examples:{" "}
+          <Link className="underline hover:text-apex-ink" href="/players/xbox/Freak407">
+            Freak407 (Xbox)
+          </Link>
+          .
         </p>
       </section>
       <ul className="grid sm:grid-cols-2 gap-4">

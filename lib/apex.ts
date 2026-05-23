@@ -93,6 +93,7 @@ async function logRawShapeOnce(endpoint: string, raw: unknown): Promise<void> {
 export async function fetchApex<T>(
   endpoint: string,
   query: Record<string, string> = {},
+  options: { revalidate?: number } = {},
 ): Promise<ApexResult<T>> {
   const key = cacheKey(endpoint, query);
   const apiKey = process.env.APEX_API_KEY;
@@ -118,7 +119,7 @@ export async function fetchApex<T>(
 
   try {
     const res = await fetch(url.toString(), {
-      cache: "no-store",
+      next: { revalidate: options.revalidate ?? 60 },
       headers: {
         Accept: "*/*",
         "User-Agent": "apexdex/0.1 (+https://github.com/ThatDudeFreak/apexdex)",
@@ -128,6 +129,10 @@ export async function fetchApex<T>(
       throw new Error(`HTTP ${res.status} ${res.statusText} for ${endpoint}`);
     }
     const data = (await res.json()) as T;
+    if (data && typeof data === "object" && "Error" in (data as Record<string, unknown>)) {
+      const errMsg = (data as unknown as { Error: string }).Error;
+      throw new Error(`API error for ${endpoint}: ${errMsg}`);
+    }
     const entry: CacheEntry = { data, fetchedAt: Date.now() };
     memCache.set(key, entry);
     await writeDiskCache(key, entry);
@@ -229,17 +234,114 @@ export type CraftingBundle = {
 export type CraftingResponse = CraftingBundle[];
 
 export function getMapRotation(): Promise<ApexResult<MapRotationResponse>> {
-  return fetchApex<MapRotationResponse>("/maprotation", { version: "2" });
+  return fetchApex<MapRotationResponse>("/maprotation", { version: "2" }, { revalidate: 60 });
 }
 
 export function getPredator(): Promise<ApexResult<PredatorResponse>> {
-  return fetchApex<PredatorResponse>("/predator");
+  return fetchApex<PredatorResponse>("/predator", {}, { revalidate: 3600 });
 }
 
 export function getCrafting(): Promise<ApexResult<CraftingResponse>> {
-  return fetchApex<CraftingResponse>("/crafting");
+  return fetchApex<CraftingResponse>("/crafting", {}, { revalidate: 21600 });
 }
 
 export function getServers(): Promise<ApexResult<ServersResponse>> {
-  return fetchApex<ServersResponse>("/servers");
+  return fetchApex<ServersResponse>("/servers", {}, { revalidate: 60 });
+}
+
+/* ---------------- Player (/bridge) ---------------- */
+
+export type PlayerBan = {
+  isActive?: boolean;
+  remainingSeconds?: number;
+  last_banReason?: string;
+};
+
+export type PlayerRank = {
+  rankScore?: number;
+  rankName?: string;
+  rankDiv?: number;
+  ladderPosPlatform?: number;
+  rankImg?: string;
+  rankedSeason?: string;
+  rankedSeasonMeta?: { start: number; end: number };
+  ALStopPercent?: number | string;
+  ALStopInt?: number | string;
+  ALStopPercentGlobal?: number | string;
+  ALStopIntGlobal?: number | string;
+  ALSFlag?: boolean;
+};
+
+export type PlayerBadge = { name?: string; value?: number; category?: string };
+
+export type PlayerGlobal = {
+  name?: string;
+  tag?: string;
+  uid?: string;
+  avatar?: string | null;
+  platform?: string;
+  level?: number;
+  levelPrestige?: number;
+  toNextLevelPercent?: number;
+  internalUpdateCount?: number;
+  bans?: PlayerBan;
+  rank?: PlayerRank;
+  arena?: PlayerRank;
+  battlepass?: { level: number | null; history: unknown };
+  badges?: PlayerBadge[];
+  internalParsingVersion?: number;
+};
+
+export type PlayerRealtime = {
+  lobbyState?: string;
+  isOnline?: number;
+  isInGame?: number;
+  canJoin?: number;
+  partyFull?: number;
+  selectedLegend?: string;
+  currentState?: string;
+  currentStateSinceTimestamp?: number;
+  currentStateAsText?: string;
+};
+
+export type LegendTracker = {
+  name?: string;
+  value?: number | string;
+  key?: string;
+  global?: boolean;
+  rank?: { rankPos: number | string; topPercent: number | string };
+  rankPlatformSpecific?: { rankPos: number | string; topPercent: number | string };
+};
+
+export type LegendEntry = {
+  LegendName?: string;
+  data?: LegendTracker[];
+  gameInfo?: {
+    skin?: string;
+    skinRarity?: string;
+    frame?: string;
+    frameRarity?: string;
+    pose?: string;
+    poseRarity?: string;
+    intro?: string;
+    introRarity?: string;
+    badges?: PlayerBadge[];
+  };
+  ImgAssets?: { icon?: string; banner?: string };
+};
+
+export type PlayerTotalTracker = { name?: string; value?: number | string };
+
+export type PlayerResponse = {
+  global?: PlayerGlobal;
+  realtime?: PlayerRealtime;
+  legends?: { selected?: LegendEntry; all?: Record<string, LegendEntry> };
+  total?: Record<string, PlayerTotalTracker>;
+  mozambiquehere_internal?: unknown;
+  processingTime?: number;
+  Error?: string;
+};
+
+export function getPlayer(name: string, platform: string): Promise<ApexResult<PlayerResponse>> {
+  return fetchApex<PlayerResponse>("/bridge", { player: name, platform }, { revalidate: 300 });
 }
