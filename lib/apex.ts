@@ -119,7 +119,10 @@ export async function fetchApex<T>(
   try {
     const res = await fetch(url.toString(), {
       cache: "no-store",
-      headers: { Accept: "application/json", "User-Agent": "apexdex/0.1 (+https://github.com/ThatDudeFreak/apexdex)" },
+      headers: {
+        Accept: "*/*",
+        "User-Agent": "apexdex/0.1 (+https://github.com/ThatDudeFreak/apexdex)",
+      },
     });
     if (!res.ok) {
       throw new Error(`HTTP ${res.status} ${res.statusText} for ${endpoint}`);
