@@ -1,0 +1,112 @@
+[
+  {
+    "slug": "wraith",
+    "name": "Wraith",
+    "class": "Skirmisher",
+    "realName": "Renee Hope Blasey",
+    "origin": "Typhon",
+    "tagline": "Interdimensional Skirmisher",
+    "abilities": {
+      "passive": {
+        "name": "Voices from the Void",
+        "description": "A voice warns Wraith when she's being targeted by an enemy at long range, when an enemy is aiming down sights at her, or when a trap has been set nearby."
+      },
+      "tactical": {
+        "name": "Into the Void",
+        "description": "Reposition quickly through the safety of the void, avoiding all damage. Wraith cannot use weapons or abilities while in the void."
+      },
+      "ultimate": {
+        "name": "Dimensional Rift",
+        "description": "Link two locations with portals for 60 seconds, allowing the entire team to use them."
+      }
+    }
+  },
+  {
+    "slug": "bloodhound",
+    "name": "Bloodhound",
+    "class": "Recon",
+    "realName": "Unknown",
+    "origin": "Talos",
+    "tagline": "Technological Tracker",
+    "abilities": {
+      "passive": {
+        "name": "Tracker",
+        "description": "See tracks left behind by enemies, revealing their recent movements."
+      },
+      "tactical": {
+        "name": "Eye of the Allfather",
+        "description": "Briefly reveal enemies, traps, and clues through all structures in front of you."
+      },
+      "ultimate": {
+        "name": "Beast of the Hunt",
+        "description": "Heightened senses let you see cold tracks and move faster. Highlights enemies in red. Knockdowns extend the duration."
+      }
+    }
+  },
+  {
+    "slug": "pathfinder",
+    "name": "Pathfinder",
+    "class": "Skirmisher",
+    "realName": "MRVN unit",
+    "origin": "Unknown",
+    "tagline": "Forward Scout",
+    "abilities": {
+      "passive": {
+        "name": "Insider Knowledge",
+        "description": "Scan a Survey Beacon to reduce the cooldown of Zipline Gun."
+      },
+      "tactical": {
+        "name": "Grappling Hook",
+        "description": "Grapple to get to out-of-reach places quickly."
+      },
+      "ultimate": {
+        "name": "Zipline Gun",
+        "description": "Create a zipline anyone can use."
+      }
+    }
+  },
+  {
+    "slug": "lifeline",
+    "name": "Lifeline",
+    "class": "Support",
+    "realName": "Ajay Che",
+    "origin": "Psamathe",
+    "tagline": "Combat Medic",
+    "abilities": {
+      "passive": {
+        "name": "Combat Revive",
+        "description": "Lifeline's drone D.O.C. can revive teammates, freeing her to defend or revive someone else."
+      },
+      "tactical": {
+        "name": "D.O.C. Heal Drone",
+        "description": "Call your Drone of Compassion to automatically heal nearby teammates over time."
+      },
+      "ultimate": {
+        "name": "Care Package",
+        "description": "Call in a drop pod full of high-quality defensive gear."
+      }
+    }
+  },
+  {
+    "slug": "bangalore",
+    "name": "Bangalore",
+    "class": "Assault",
+    "realName": "Anita Williams",
+    "origin": "Gridiron",
+    "tagline": "Professional Soldier",
+    "abilities": {
+      "passive": {
+        "name": "Double Time",
+        "description": "Taking fire while sprinting makes you move faster for a brief time."
+      },
+      "tactical": {
+        "name": "Smoke Launcher",
+        "description": "Fire a high-velocity smoke canister that explodes into a smoke wall on impact."
+      },
+      "ultimate": {
+        "name": "Rolling Thunder",
+        "description": "Call in an artillery strike that slowly creeps across the landscape."
+      }
+    }
+  }
+]
