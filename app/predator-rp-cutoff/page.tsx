@@ -61,7 +61,9 @@ function PlatformRow({
           : "—"}
       </td>
       <td className="py-3 text-right align-top font-mono tabular-nums">
-        {typeof rp?.foundRank === "number" ? `#${rp.foundRank.toLocaleString()}` : "—"}
+        {typeof rp?.foundRank === "number" && rp.foundRank > 0
+          ? `#${rp.foundRank.toLocaleString()}`
+          : "—"}
       </td>
     </tr>
   );

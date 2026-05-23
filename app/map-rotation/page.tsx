@@ -59,30 +59,40 @@ function ModeCard({ keyName, rotation }: { keyName: string; rotation: ModeRotati
   const current = rotation.current;
   const next = rotation.next;
   const ends = endsAtMs(current);
+  const heading =
+    keyName === "ltm" && current?.eventName ? current.eventName : modeLabel(keyName);
   return (
-    <li className="rounded-lg border border-apex-line bg-apex-panel p-5">
-      <h2 className="text-sm uppercase tracking-wide text-apex-dim">
-        {modeLabel(keyName)}
-      </h2>
-      <p className="mt-1 text-2xl font-semibold">
-        {current?.map ?? "Unknown"}
-      </p>
-      {ends ? (
-        <p className="mt-1 text-sm text-apex-dim">
-          Swaps in <Countdown endsAtMs={ends} />
-        </p>
-      ) : current?.remainingTimer ? (
-        <p className="mt-1 text-sm text-apex-dim">Swaps in {current.remainingTimer}</p>
+    <li className="overflow-hidden rounded-lg border border-apex-line bg-apex-panel">
+      {current?.asset ? (
+        <div
+          className="h-32 bg-cover bg-center"
+          style={{ backgroundImage: `url(${current.asset})` }}
+          aria-hidden
+        />
       ) : null}
-      {next?.map ? (
-        <p className="mt-3 text-sm">
-          <span className="text-apex-dim">Next:</span>{" "}
-          <span className="text-apex-ink">{next.map}</span>
-          {typeof next.DurationInMinutes === "number"
-            ? ` · ${next.DurationInMinutes} min`
-            : null}
-        </p>
-      ) : null}
+      <div className="p-5">
+        <h2 className="text-sm uppercase tracking-wide text-apex-dim">{heading}</h2>
+        <p className="mt-1 text-2xl font-semibold">{current?.map ?? "Unknown"}</p>
+        {ends ? (
+          <p className="mt-1 text-sm text-apex-dim">
+            Swaps in <Countdown endsAtMs={ends} />
+          </p>
+        ) : current?.remainingTimer ? (
+          <p className="mt-1 text-sm text-apex-dim">Swaps in {current.remainingTimer}</p>
+        ) : null}
+        {next?.map ? (
+          <p className="mt-3 text-sm">
+            <span className="text-apex-dim">Next:</span>{" "}
+            <span className="text-apex-ink">
+              {keyName === "ltm" && next.eventName ? `${next.eventName}: ` : ""}
+              {next.map}
+            </span>
+            {typeof next.DurationInMinutes === "number"
+              ? ` · ${next.DurationInMinutes} min`
+              : null}
+          </p>
+        ) : null}
+      </div>
     </li>
   );
 }

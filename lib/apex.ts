@@ -164,6 +164,7 @@ export type MapInfo = {
   readableDate_start?: string;
   readableDate_end?: string;
   asset?: string;
+  isActive?: boolean;
   eventName?: string | null;
 };
 
@@ -176,8 +177,6 @@ export type MapRotationResponse = {
   battle_royale?: ModeRotation;
   ranked?: ModeRotation;
   ltm?: ModeRotation;
-  control?: ModeRotation;
-  gunGame?: ModeRotation;
   [mode: string]: ModeRotation | undefined;
 };
 
@@ -185,6 +184,7 @@ export type PredatorPlatform = {
   foundRank?: number;
   val?: number;
   uid?: string;
+  updateTimestamp?: number;
   totalMastersAndPreds?: number;
 };
 
@@ -196,14 +196,16 @@ export type PredatorResponse = {
     SWITCH?: PredatorPlatform;
     [platform: string]: PredatorPlatform | undefined;
   };
-  AP?: {
-    PC?: PredatorPlatform;
-    PS4?: PredatorPlatform;
-    X1?: PredatorPlatform;
-    SWITCH?: PredatorPlatform;
-    [platform: string]: PredatorPlatform | undefined;
-  };
 };
+
+export type ServerStatus = {
+  Status?: "UP" | "DOWN" | "SLOW" | string;
+  HTTPCode?: number;
+  ResponseTime?: number;
+  QueryTimestamp?: number;
+};
+
+export type ServersResponse = Record<string, Record<string, ServerStatus>>;
 
 export type CraftingItem = {
   item?: string;
@@ -233,4 +235,8 @@ export function getPredator(): Promise<ApexResult<PredatorResponse>> {
 
 export function getCrafting(): Promise<ApexResult<CraftingResponse>> {
   return fetchApex<CraftingResponse>("/crafting");
+}
+
+export function getServers(): Promise<ApexResult<ServersResponse>> {
+  return fetchApex<ServersResponse>("/servers");
 }
